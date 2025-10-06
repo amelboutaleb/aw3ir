@@ -1,3 +1,30 @@
 h1 {
 text-align: center;
 }
+img {
+      max-width: 150px; 
+      height: auto;
+      border-radius: 8px;
+      display: flex;         
+      gap: 10px;     
+      margin: 20px auto;     
+      
+
+}
+        img:hover{
+             border: 2px solid black; 
+             border-radius: 5px;      
+             transition: border 0.3s;
+        }
+        .droite{
+            flex: 1;
+            text-align: justify; 
+
+        }
+       
+        body{
+            background-color: beige;
+        }
+        h2:hover{
+          color: gray;
+        }
