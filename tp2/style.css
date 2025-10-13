@@ -4,6 +4,7 @@ label {
 }
 
 input {
+    background-color:white ;
   width: 250px;
   padding: 6px 12px;
   border-radius: 5px;
@@ -13,7 +14,7 @@ input {
 }
 
 form {
-  background-color: white;
+  background-color:white;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
@@ -36,6 +37,7 @@ form {
 
 form p {
   margin-bottom: 1em;
+   
 }
 
 form:invalid input[type="submit"],
@@ -61,7 +63,34 @@ input:invalid + .icon-ok {
 h1{
     text-align: center;
     color: rgb(53, 53, 151);
+
+  background-color: #e7f0ff;       
+  border: 2px solid #0d6efd;       
+  border-radius: 16px;              
+  padding: 20px 30px;               
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  max-width: 600px;                 
+  margin: 0 auto 30px;              
+  font-weight: bold;
+  font-size: 2em;
+  color: #0d6efd;
+  letter-spacing: 1px;             
+  text-transform: uppercase; 
 }
 .bod{
-    background-color: beige;
+    background-color: #f0f4ff;
+   
+}
+#hi {
+   text-align: center; 
+   font-size: 1.6em; 
+   font-weight: bold;
+    margin-top: 50px; 
+    color: #333;
+}
+h1:hover{
+    color: #c3cfe2;
+}
+body{
+    background-color: #e7f0ff;
 }
