@@ -30,6 +30,7 @@ form {
   cursor: pointer;
   text-decoration: none;
   font-size: 1em;
+  min-width: 160px;
 }
 
 
@@ -51,4 +52,13 @@ input:invalid + .icon-ok {
 }
 input:invalid + .icon-ok {
   display: none;
+}
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+  
+}
+h1{
+    text-align: center;
+    color: rgb(53, 53, 151);
 }
