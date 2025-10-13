@@ -14,7 +14,9 @@ input {
 }
 
 form {
-  background-color:white;
+    background-color: white;
+    border: 1px solid #0d6efd;
+  
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
