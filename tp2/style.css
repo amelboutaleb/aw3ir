@@ -110,3 +110,6 @@ body{
 .btn-primar:hover{
     text-transform:uppercase;
 }
+label{
+    text-decoration: dotted;
+}
