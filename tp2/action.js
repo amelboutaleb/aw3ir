@@ -1,10 +1,10 @@
 window.onload = () => {
-  const paramsString = document.location.search; // '?name=John&firstname=Doe&...'
+  const paramsString = document.location.search; 
   const searchParams = new URLSearchParams(paramsString);
 
   for (const param of searchParams) {
-    const key = param[0];    // ex: 'name'
-    const value = decodeURIComponent(param[1]); // ex: 'John'
+    const key = param[0];    
+    const value = decodeURIComponent(param[1]); 
     const element = document.getElementById(key);
 
     if (element !== null) {
