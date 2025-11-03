@@ -1,0 +1,121 @@
+
+body {
+  background: linear-gradient(135deg, #e6e0ff 0%, #f4f1ff 100%);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #3b246d;
+  min-height: 100vh;
+}
+
+
+.container {
+  background-color: #ffffff;
+  padding: 40px;
+  margin-top: 60px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(128, 94, 219, 0.2);
+  max-width: 700px;
+}
+
+
+h2 {
+  text-align: center;
+  font-weight: 600;
+  color: #5a3dc0;
+  margin-bottom: 30px;
+}
+
+
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #c9b9ff;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #8c6bff;
+  box-shadow: 0 0 6px rgba(140, 107, 255, 0.4);
+}
+
+
+label {
+  color: #4c2f85;
+  font-weight: 500;
+}
+
+
+.btn-primary {
+  background-color: #7a5fff;
+  border-color: #7a5fff;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: #5a3dc0;
+  border-color: #5a3dc0;
+}
+
+
+.modal-content {
+  border-radius: 15px;
+  border: 2px solid #d9ccff;
+  box-shadow: 0 6px 20px rgba(122, 95, 255, 0.3);
+}
+
+.modal-header {
+  background-color: #efeaff;
+  border-bottom: 1px solid #d9ccff;
+  color: #4c2f85;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-body {
+  color: #3b246d;
+}
+
+.modal-footer .btn-primary {
+  background-color: #7a5fff;
+  border-color: #7a5fff;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #5a3dc0;
+}
+
+
+.modal-body p {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+
+.modal-body img {
+  border-radius: 10px;
+  border: 2px solid #d9ccff;
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin: 10px auto;
+}
+
+
+.container, .modal-content {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
