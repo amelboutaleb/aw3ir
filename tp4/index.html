@@ -1,39 +1,228 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>TP4</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
-
-    <style>
-        body {
-            background-color: #e9ebee;
-            font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
-            font-size: 16px;
-            margin: 0 auto;
-            max-width: 800px;
-        }
-    </style>
-
-    <!-- Code à dé-commenter si besoin de fichier CSS ou JS -->
-    <!--<link rel="stylesheet" href="style.css">-->
-    <!--<script src="main.js"></script>-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TP4 - Formulaire avec HTML5 et JS</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <style>
+    #map { margin-top: 10px; }
+    [data-count] { font-weight: bold; text-align: right; }
+  </style>
 </head>
+<body class="container py-4">
 
-<body>
-    <nav>
-        <a href="..">🏠 Index</a> / TP4
-    </nav>
-    <h1>TP4</h1>
-    <!-- Add your site or application content here -->
-    <p>Hello world! This is HTML5 Boilerplate.</p>
-    <img src="../galilee.png" alt="Logo Galilee" />
+  <h1>Gestion de contacts</h1>
+
+  <form id="contactForm">
+    <!-- Nom -->
+    <div class="row mb-3">
+      <div class="col-2"><label for="name">Nom</label></div>
+      <div class="col"><input type="text" id="name" class="form-control" onkeyup="calcNbChar('name')"></div>
+      <div class="col-1" data-count>0 car.</div>
+    </div>
+
+    <!-- Prénom -->
+    <div class="row mb-3">
+      <div class="col-2"><label for="firstname">Prénom</label></div>
+      <div class="col"><input type="text" id="firstname" class="form-control" onkeyup="calcNbChar('firstname')"></div>
+      <div class="col-1" data-count>0 car.</div>
+    </div>
+
+    <!-- Date de naissance -->
+    <div class="row mb-3">
+      <div class="col-2"><label for="birth">Date de naissance</label></div>
+      <div class="col"><input type="date" id="birth" class="form-control"></div>
+      <div class="col-1" data-count></div>
+    </div>
+
+    <!-- Adresse -->
+    <div class="row mb-3">
+      <div class="col-2"><label for="adresse">Adresse</label></div>
+      <div class="col"><input type="text" id="adresse" class="form-control" onkeyup="calcNbChar('adresse')"></div>
+      <div class="col-1" data-count>0 car.</div>
+      <div class="col-1"><button id="gps" class="btn btn-secondary">GPS</button></div>
+    </div>
+
+    <!-- Map -->
+    <div id="map" class="mb-3"></div>
+
+    <!-- Email -->
+    <div class="row mb-3">
+      <div class="col-2"><label for="mail">Email</label></div>
+      <div class="col"><input type="email" id="mail" class="form-control" onkeyup="calcNbChar('mail')"></div>
+      <div class="col-1" data-count>0 car.</div>
+    </div>
+
+    <!-- Boutons Ajouter et Reset -->
+    <div class="row mb-3">
+      <div class="col">
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+        <button type="button" id="reset" class="btn btn-danger">Reset</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Tableau des contacts -->
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Date</th>
+        <th>Adresse</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Scripts -->
+  <script src="js/bootstrap.bundle.js"></script>
+
+  <!-- ✅ GPS avec adresse complète -->
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.querySelector("#map").innerHTML =
+          "Geolocation is not supported by this browser.";
+      }
+    }
+
+    async function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const zoom = 5;
+      const delta = 0.05 / Math.pow(2, zoom - 10);
+
+      const bboxEdges = {
+        south: latitude - delta,
+        north: latitude + delta,
+        west: longitude - delta,
+        east: longitude + delta,
+      };
+
+      const bbox = `${bboxEdges.west}%2C${bboxEdges.south}%2C${bboxEdges.east}%2C${bboxEdges.north}`;
+      const iframeSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${latitude}%2C${longitude}`;
+
+      // Affiche la carte
+      document.getElementById("map").innerHTML = `
+        <iframe width="100%" height="200" frameborder="0" scrolling="no" src="${iframeSrc}"></iframe>
+      `;
+
+      // Récupère l’adresse lisible via Nominatim
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await response.json();
+
+        const adresseComplete = data.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+
+        const adresseInput = document.querySelector("#adresse");
+        adresseInput.value = adresseComplete;
+
+        if (typeof calcNbChar === "function") {
+          calcNbChar("adresse");
+        }
+      } catch (err) {
+        console.error("Erreur lors de la récupération de l'adresse :", err);
+        document.querySelector("#adresse").value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+      }
+    }
+
+    function showError(error) {
+      const mapDiv = document.querySelector("#map");
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          mapDiv.innerHTML = "L'utilisateur a refusé la géolocalisation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          mapDiv.innerHTML = "Les informations de localisation sont indisponibles.";
+          break;
+        case error.TIMEOUT:
+          mapDiv.innerHTML = "Le délai pour obtenir la position a expiré.";
+          break;
+        default:
+          mapDiv.innerHTML = "Une erreur inconnue est survenue.";
+      }
+    }
+  </script>
+
+  <!-- store.js -->
+  <script>
+    var contactStore = (function () {
+      let contactList = JSON.parse(localStorage.getItem("contactList")) || [];
+
+      return {
+        add: function (_name, _firstname, _date, _adress, _mail) {
+          const contact = { name: _name, firstname: _firstname, date: _date, adress: _adress, mail: _mail };
+          contactList.push(contact);
+          localStorage.setItem("contactList", JSON.stringify(contactList));
+          return contactList;
+        },
+        reset: function () {
+          contactList = [];
+          localStorage.removeItem("contactList");
+          return contactList;
+        },
+        getList: function () { return contactList; },
+      };
+    })();
+  </script>
+
+  <!-- form-validation.js -->
+  <script>
+    function calcNbChar(id) {
+      const input = document.querySelector(`#${id}`);
+      const countElement = input.parentElement.parentElement.querySelector("[data-count]");
+      countElement.textContent = input.value.length + " car.";
+    }
+
+    function displayContactList() {
+      const contactList = contactStore.getList();
+      const tbody = document.querySelector("table tbody");
+      tbody.innerHTML = "";
+      for (const c of contactList) {
+        tbody.innerHTML += `<tr>
+          <td>${c.name}</td>
+          <td>${c.firstname}</td>
+          <td>${c.date}</td>
+          <td>${c.adress}</td>
+          <td><a href="mailto:${c.mail}">${c.mail}</a></td>
+        </tr>`;
+      }
+    }
+
+    window.onload = function () {
+      displayContactList();
+
+      document.querySelector("form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        contactStore.add(
+          document.querySelector(`#name`).value,
+          document.querySelector(`#firstname`).value,
+          document.querySelector(`#birth`).value,
+          document.querySelector(`#adresse`).value,
+          document.querySelector(`#mail`).value
+        );
+        displayContactList();
+      });
+
+      document.querySelector("#gps").addEventListener("click", function (event) {
+        event.preventDefault();
+        getLocation();
+      });
+
+      document.querySelector("#reset").addEventListener("click", function () {
+        contactStore.reset();
+        displayContactList();
+      });
+    };
+  </script>
+
 </body>
-
 </html>
