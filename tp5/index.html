@@ -1,39 +1,85 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>TP5</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>TP5 - Application Météo</title>
 
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+
+    <!-- Weather Icons CSS -->
+    <link rel="stylesheet" href="css/weather-icons.min.css" />
+
+    <!-- Leaflet CSS (pour la carte) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
-        body {
-            background-color: #e9ebee;
-            font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
-            font-size: 16px;
-            margin: 0 auto;
-            max-width: 800px;
-        }
+        body { margin-top: 20px; }
+        a.list-group-item { cursor: pointer; }
+        .weather-card { margin-top: 15px; }
+        .weather-icon { font-size: 48px; }
+        #map { height: 300px; margin-top: 15px; }
     </style>
-
-    <!-- Code à dé-commenter si besoin de fichier CSS ou JS -->
-    <!--<link rel="stylesheet" href="style.css">-->
-    <!--<script src="main.js"></script>-->
 </head>
-
 <body>
-    <nav>
-        <a href="..">🏠 Index</a> / TP5
-    </nav>
-    <h1>TP5</h1>
-    <!-- Add your site or application content here -->
-    <p>Hello world! This is HTML5 Boilerplate.</p>
-    <img src="../galilee.png" alt="Logo Galilee" />
-</body>
 
+<div id="weatherApp" class="container">
+    <h1 class="my-3">🌤 Application Météo</h1>
+
+    <!-- BOUTON MA POSITION -->
+    <button class="btn btn-success mb-3" @click="getMyLocation">🌍 Ma position</button>
+
+    <!-- FORMULAIRE -->
+    <form v-on:submit.prevent="addCity" class="mb-3">
+        <div class="input-group">
+            <input type="search" class="form-control" v-model="formCityName" placeholder="Rechercher une ville..." required autofocus/>
+            <button class="btn btn-primary" type="submit">Ajouter</button>
+        </div>
+        <small class="text-muted">{{ formCityName.length }} caractères</small>
+        <div class="alert alert-danger mt-2" v-if="messageForm != ''">
+            {{ messageForm }}
+        </div>
+    </form>
+
+    <!-- LISTE DES VILLES -->
+    <h4>Liste des villes ({{ cityList.length }})</h4>
+    <ul class="list-group mb-4">
+        <li v-for="(city, index) in cityList" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
+            {{ city.name }}
+            <div>
+                <button class="btn btn-danger btn-sm me-2" @click="removeCity(index)">&times;</button>
+                <button class="btn btn-info btn-sm" @click="selectCity(city)">🌤</button>
+            </div>
+        </li>
+    </ul>
+
+    <div class="alert alert-primary" v-if="cityList.length == 0">Aucune ville saisie.</div>
+
+    <!-- AFFICHAGE MÉTÉO + CARTE -->
+    <div v-if="selectedCityWeather" class="weather-card card">
+        <div class="card-body">
+            <h5 class="card-title">{{ selectedCityWeather.name }}</h5>
+            <div class="d-flex align-items-center mb-3">
+                <i :class="weatherIcon(selectedCityWeather) + ' weather-icon me-3'"></i>
+                <div>
+                    <p class="mb-1">Température : {{ selectedCityWeather.main.temp }}°C</p>
+                    <p class="mb-1">Humidité : {{ selectedCityWeather.main.humidity }}%</p>
+                    <p class="mb-1">Vent : {{ selectedCityWeather.wind.speed }} m/s</p>
+                    <p class="mb-1">Conditions : {{ selectedCityWeather.weather[0].description }}</p>
+                    <p class="mb-1">Lever du soleil : {{ sunriseTime(selectedCityWeather) }}</p>
+                    <p class="mb-1">Coucher du soleil : {{ sunsetTime(selectedCityWeather) }}</p>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts JS -->
+<script src="js/libs/vue.js"></script>
+<script src="js/libs/bootstrap.bundle.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/main.js"></script>
+
+</body>
 </html>
