@@ -7,5 +7,5 @@ import { Component, signal } from '@angular/core';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('meteo-angular');
+  protected readonly title = signal('⛅ Weather webapp @Master 3ir²');
 }
