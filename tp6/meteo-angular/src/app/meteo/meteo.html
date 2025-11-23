@@ -1,0 +1,67 @@
+<!-- Navbar / breadcrumb -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">🏠</li>
+  </ol>
+</nav>
+
+<!-- Formulaire pour ajouter une ville -->
+<form (ngSubmit)="onSubmit()">
+  <div class="input-group mb-3">
+    <input
+      type="search"
+      placeholder="Ville ..."
+      id="name"
+      name="name"
+      class="form-control"
+      required
+      minlength="3"
+      [(ngModel)]="city.name"
+      #name="ngModel"
+    />
+    <button class="btn btn-primary" type="submit" [disabled]="!name.valid">
+      Go!
+    </button>
+  </div>
+
+  <!-- Compteur de caractères -->
+  <small *ngIf="city.name" class="text-muted">
+    {{ city.name.length }} caractères
+  </small>
+
+  <!-- Messages d'erreur -->
+  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+    <div *ngIf="name.errors?.['required']">La saisie de la ville est obligatoire</div>
+    <div *ngIf="name.errors?.['minlength']">Doit contenir au moins 3 caractères</div>
+  </div>
+</form>
+
+<hr />
+
+<!-- Liste des villes -->
+<h4>Liste des villes ({{ cityList.length }})</h4>
+<ul class="list-group">
+  <li
+    *ngFor="let c of cityList"
+    class="list-group-item d-flex justify-content-between align-items-center"
+  >
+    {{ c.name }}
+    <button
+      (click)="remove(c)"
+      class="btn btn-secondary btn-sm"
+      title="Supprimer de la liste"
+    >
+      &times;
+    </button>
+  </li>
+</ul>
+
+<!-- Message si aucune ville -->
+<div class="alert alert-primary" *ngIf="cityList.length === 0">
+  Aucune ville de saisie !
+</div>
+
+<hr />
+
+<!-- Affichage de la liste complète en JSON pour debug -->
+<pre>{{ cityList | json }}</pre>
