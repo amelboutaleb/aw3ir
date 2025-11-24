@@ -1,0 +1,93 @@
+/* ----------------------------- */
+/* BANNIÈRE PRINCIPALE           */
+/* ----------------------------- */
+
+header.app-header {
+  background: linear-gradient(90deg, #00bcd4, #2196f3);
+  color: white;
+  padding: 25px;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+header.app-header img {
+  width: 45px;
+}
+
+
+/* ----------------------------- */
+/* BREADCRUMB                    */
+/* ----------------------------- */
+.breadcrumb {
+  background-color: #f0f3f5;
+  margin: 10px 0 20px 0;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+
+/* ----------------------------- */
+/* FORMULAIRE                    */
+/* ----------------------------- */
+.input-group input {
+  border-radius: 6px 0 0 6px;
+}
+
+.input-group .btn {
+  border-radius: 0 6px 6px 0;
+}
+
+
+/* ----------------------------- */
+/* LISTE DES VILLES              */
+/* ----------------------------- */
+ul {
+  padding: 0;
+}
+
+.list-group-item {
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+
+.list-group-item:hover {
+  background: #f0f8ff;
+  transition: 0.2s;
+}
+
+
+/* ----------------------------- */
+/* BOUTONS                        */
+/* ----------------------------- */
+.btn-primary {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+
+.btn-secondary {
+  background-color: #ccc;
+  border-color: #bbb;
+}
+
+
+/* ----------------------------- */
+/* TITRES / TEXTES                */
+/* ----------------------------- */
+h4 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.alert-primary {
+  margin-top: 20px;
+}
