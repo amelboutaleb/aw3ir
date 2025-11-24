@@ -40,20 +40,27 @@
 
 <!-- Liste des villes -->
 <h4>Liste des villes ({{ cityList.length }})</h4>
-<ul class="list-group">
-  <li
-    *ngFor="let c of cityList"
-    class="list-group-item d-flex justify-content-between align-items-center"
+<ul>
+<li
+  *ngFor="let c of cityList"
+  class="list-group-item d-flex justify-content-between align-items-center"
+>
+  <span>{{ c.name }}</span>
+  
+  <!-- Lien vers la page de détail -->
+  <a [routerLink]="['/meteo', c.name]" class="btn btn-primary btn-sm me-2">
+    Détails
+  </a>
+
+  <button
+    (click)="remove(c)"
+    class="btn btn-secondary btn-sm"
+    title="Supprimer de la liste"
   >
-    {{ c.name }}
-    <button
-      (click)="remove(c)"
-      class="btn btn-secondary btn-sm"
-      title="Supprimer de la liste"
-    >
-      &times;
-    </button>
-  </li>
+    &times;
+  </button>
+</li>
+
 </ul>
 
 <!-- Message si aucune ville -->

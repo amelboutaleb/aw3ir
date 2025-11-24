@@ -1,3 +1,10 @@
-<p>meteo-detail works!</p>
-<h2>Détails météo pour {{ cityName }}</h2>
-<p>Affiche ici toutes les infos météo pour cette ville.</p>
+<!-- meteo-detail.html -->
+<div class="container mt-3">
+  <h2>Détails météo pour {{ cityName }}</h2>
+
+  <p *ngIf="!cityName">Aucune ville sélectionnée.</p>
+
+  <p *ngIf="cityName">
+    Affiche ici toutes les infos météo pour la ville <strong>{{ cityName }}</strong>.
+  </p>
+</div>
