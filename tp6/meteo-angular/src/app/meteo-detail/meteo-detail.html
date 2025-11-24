@@ -1,27 +1,40 @@
-<!-- meteo‑detail.html -->
 <div class="container mt-3">
   <h2>Détails météo pour {{ cityName }}</h2>
 
-  <!-- Message d’erreur -->
+  <!-- Si erreur -->
   <div *ngIf="error" class="alert alert-danger">
     Erreur : {{ error.message || error }}
   </div>
 
-  <!-- Affichage des données météo si tout est OK -->
-  <div *ngIf="meteo && meteo.cod == 200">
+  <!-- Si chargement -->
+  <div *ngIf="loading && !error">
+    <p>Chargement des données météo...</p>
+    <!-- Tu peux remplacer le texte par un spinner Bootstrap par exemple -->
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Si données météo OK -->
+  <div *ngIf="!loading && meteo && meteo.cod == 200">
     <p><strong>Température :</strong> {{ meteo.main.temp }} °C</p>
     <p><strong>Description :</strong> {{ meteo.weather[0].description }}</p>
     <p><strong>Nuages :</strong> {{ meteo.clouds.all }} %</p>
     <p><strong>Humidité :</strong> {{ meteo.main.humidity }} %</p>
     <p><strong>Vent :</strong> {{ meteo.wind.speed }} km/h</p>
     <p><strong>Coordonnées :</strong> {{ latlon }}</p>
-    <p><strong>Lever du soleil :</strong> {{ meteo.sys.sunrise * 1000 | date:'H:mm' }}</p>
-    <p><strong>Coucher du soleil :</strong> {{ meteo.sys.sunset * 1000 | date:'H:mm' }}</p>
+    <p>
+      <strong>Lever du soleil :</strong>
+      {{ meteo.sys.sunrise * 1000 | date:'H:mm' }}
+    </p>
+    <p>
+      <strong>Coucher du soleil :</strong>
+      {{ meteo.sys.sunset * 1000 | date:'H:mm' }}
+    </p>
   </div>
 
-  <!-- Message "chargement" tant que les données ne sont pas encore arrivées -->
-  <div *ngIf="!error && !meteo">
-    <p>Chargement des données météo...</p>
+  <!-- Si fin du chargement mais pas d'erreur et pas de données -->
+  <div *ngIf="!loading && !meteo && !error">
+    <p>Aucune donnée météo trouvée.</p>
   </div>
 </div>
-
