@@ -18,3 +18,6 @@ export class MeteoDetail implements OnInit {
   }
 }
 
+
+
+
