@@ -1,11 +1,27 @@
-<!-- meteo-detail.html -->
+<!-- meteo‑detail.html -->
 <div class="container mt-3">
   <h2>Détails météo pour {{ cityName }}</h2>
 
-  <p *ngIf="!cityName">Aucune ville sélectionnée.</p>
+  <!-- Message d’erreur -->
+  <div *ngIf="error" class="alert alert-danger">
+    Erreur : {{ error.message || error }}
+  </div>
 
-  <p *ngIf="cityName">
-    Affiche ici toutes les infos météo pour la ville <strong>{{ cityName }}</strong>.
-  </p>
+  <!-- Affichage des données météo si tout est OK -->
+  <div *ngIf="meteo && meteo.cod == 200">
+    <p><strong>Température :</strong> {{ meteo.main.temp }} °C</p>
+    <p><strong>Description :</strong> {{ meteo.weather[0].description }}</p>
+    <p><strong>Nuages :</strong> {{ meteo.clouds.all }} %</p>
+    <p><strong>Humidité :</strong> {{ meteo.main.humidity }} %</p>
+    <p><strong>Vent :</strong> {{ meteo.wind.speed }} km/h</p>
+    <p><strong>Coordonnées :</strong> {{ latlon }}</p>
+    <p><strong>Lever du soleil :</strong> {{ meteo.sys.sunrise * 1000 | date:'H:mm' }}</p>
+    <p><strong>Coucher du soleil :</strong> {{ meteo.sys.sunset * 1000 | date:'H:mm' }}</p>
+  </div>
+
+  <!-- Message "chargement" tant que les données ne sont pas encore arrivées -->
+  <div *ngIf="!error && !meteo">
+    <p>Chargement des données météo...</p>
+  </div>
 </div>
 
