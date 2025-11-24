@@ -1,40 +1,67 @@
 <div class="container mt-3">
   <h2>Détails météo pour {{ cityName }}</h2>
 
-  <!-- Si erreur -->
+  <!-- Loading -->
+  <div *ngIf="loading && !error">
+    <p>Chargement des données météo...</p>
+  </div>
+
+  <!-- Erreur -->
   <div *ngIf="error" class="alert alert-danger">
     Erreur : {{ error.message || error }}
   </div>
 
-  <!-- Si chargement -->
-  <div *ngIf="loading && !error">
-    <p>Chargement des données météo...</p>
-    <!-- Tu peux remplacer le texte par un spinner Bootstrap par exemple -->
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <!-- Affichage des données météo si tout est OK et que ce n'est pas en chargement -->
+  <div *ngIf="!loading && meteo && meteo.cod == 200">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/">🏠</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Météo pour {{ meteo.name }}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="card" style="width:300px; margin: 0 auto">
+      <div class="card-header">
+        {{ meteo.name }} / {{ meteo.dt * 1000 | date:"EEEE d LLLL HH:mm" }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">
+          <i [class]="'wi wi-owm-day-' + meteo.weather[0].id"></i>
+          {{ meteo.main.temp }} <i class="wi wi-celsius"></i>
+        </h5>
+        <p class="card-text">{{ meteo.weather[0].description }}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <i class="wi wi-cloud"></i> Nuage: {{ meteo.clouds.all }}%
+        </li>
+        <li class="list-group-item">
+          <i class="wi wi-humidity"></i> Humidité: {{ meteo.main.humidity }}%
+        </li>
+        <li class="list-group-item">
+          <i class="wi wi-windy"></i> Vent: {{ meteo.wind.speed }} km/h
+        </li>
+        <li class="list-group-item">
+          <i class="wi wi-sunrise"></i> Lever du soleil:
+          {{ meteo.sys.sunrise * 1000 | date:'H:mm' }}
+        </li>
+        <li class="list-group-item">
+          <i class="wi wi-sunset"></i> Coucher du soleil:
+          {{ meteo.sys.sunset * 1000 | date:'H:mm' }}
+        </li>
+      </ul>
     </div>
   </div>
 
-  <!-- Si données météo OK -->
-  <div *ngIf="!loading && meteo && meteo.cod == 200">
-    <p><strong>Température :</strong> {{ meteo.main.temp }} °C</p>
-    <p><strong>Description :</strong> {{ meteo.weather[0].description }}</p>
-    <p><strong>Nuages :</strong> {{ meteo.clouds.all }} %</p>
-    <p><strong>Humidité :</strong> {{ meteo.main.humidity }} %</p>
-    <p><strong>Vent :</strong> {{ meteo.wind.speed }} km/h</p>
-    <p><strong>Coordonnées :</strong> {{ latlon }}</p>
-    <p>
-      <strong>Lever du soleil :</strong>
-      {{ meteo.sys.sunrise * 1000 | date:'H:mm' }}
-    </p>
-    <p>
-      <strong>Coucher du soleil :</strong>
-      {{ meteo.sys.sunset * 1000 | date:'H:mm' }}
-    </p>
-  </div>
-
-  <!-- Si fin du chargement mais pas d'erreur et pas de données -->
+  <!-- Cas où ce n'est pas en chargement, mais pas de météo + pas d'erreur -->
   <div *ngIf="!loading && !meteo && !error">
     <p>Aucune donnée météo trouvée.</p>
   </div>
+
+  <hr />
+  
 </div>
